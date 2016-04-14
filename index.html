@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">		
+		<title>台灣砂輪</title>
+						
+		<script type="text/javascript" src="js/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.address-1.5.min.js"></script>
+		<script type="text/javascript" src="easyui/jquery.easyui.min.js"></script> 
+		<script type="text/javascript" src="js/datagrid-filter.js"></script> 
+		
+		<link rel="stylesheet" href="css/kube.css" type="text/css" />
+		<link rel="stylesheet" href="css/main.css" type="text/css" />		
+		<link id="dlink" rel="stylesheet" type="text/css" href="easyui/themes/bootstrap/easyui.css"> 
+		<link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"> 						
+		<style> 
+				.header{ min-width: 1024px; }
+				body{ min-width: 1024px;overflow:hidden;} 
+		</style> 
+		<script>
+			function slide(msg){
+				$.messager.show({
+					title:'提示視窗',
+					msg:msg,
+					timeout:3000,
+					showType:'slide'
+				});
+			}
+			$(document).ready(function(){
+				$('#mm1,#mm2').menu({
+					onClick:function(item){											
+						var data = $(item.target).data();
+						if($.isEmptyObject(data)){
+							return false;
+						}
+												
+						var tab = $('#tt').tabs('getTab',data.title);
+						if(tab==null){
+							$('#tt').tabs('add',{
+								title: data.title,
+								href:data.href,
+								selected: true,
+								closable:true							
+							});
+						}else{
+							$('#tt').tabs('select',data.title);
+						}	
+						
+						$.address.value(data.href);
+					}
+				});
+				
+				$(window).resize(function(){
+					$("#main-layout").layout('resize', {
+						width:'100%',
+						height:$(window).height()
+					})
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div id="header" class="group wrap header">
+			<div class="content">
+				<div id="elogo" class="navbar navbar-left">
+					<ul>
+						<li>
+							<a href="/index.php">台灣砂輪</a>
+						</li>
+					</ul>
+				</div>
+				<div id="navbar-1" class="navbar navbar-right">
+					<ul>
+						<li><a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">參數設定</a></li>
+						<li><a href="#" class="easyui-menubutton" data-options="menu:'#mm2'">調和單</a></li>
+						<li><a href="/index.php">權限</a></li>
+						<li><a href="/index.php">登出</a></li>
+					</ul>
+				</div>	
+				<div style="clear:both"></div>
+			</div>			
+		</div>
+		<div id="mainwrap">
+			<div id="content">
+				<div id="main-layout" class="easyui-layout" style="width:100%;height:100%"> 
+					<div region="center" style="padding:0px;width:100%;">
+						<div id="tt" class="easyui-tabs" data-options="border:false" style="padding:0px;width:100%;"></div>
+					</div>					
+				</div> 
+			</div>
+		</div>
+		<div id="mm1" style="width:150px;">
+			<div>
+				<span>客戶資料設定</span>				
+				<div>
+					<div data-href="Action/client" data-title="客戶資本資料">客戶資本資料</div>
+					<div data-href="Action/apcode?type=GrindingMode" data-title="研磨方式">研磨方式</div>
+					<div data-href="Action/apcode?type=WetDry" data-title="濕或乾磨">濕或乾磨</div>
+					<div data-href="Action/apcode?type=Reconcile" data-title="調和批次設定">調和批次設定</div>
+					<div data-href="Action/apcode?type=Modulations" data-title="製造性質">製造性質</div>					
+				</div>
+			</div>			
+			<div class="menu-sep"></div>
+			<div>
+				<span>模具規格</span>
+				<div>
+					<div data-href="Action/cornerstone" data-title="角石設定">角石設定</div>					
+					<div data-href="Action/grindingwheel" data-title="砂輪設定">砂輪設定</div>					
+				</div>
+			</div>
+			<div class="menu-sep"></div>
+			<div>
+				<span>客戶需要規格</span>
+				<div>
+					<div>圖面編號設定</div>
+					<div data-href="Action/apcode?type=AbrasiveC" data-title="磨料設定(客戶規格)">磨料設定</div>
+					<div data-href="Action/apcode?type=Combination" data-title="結合度設定(客戶規格)">結合度設定</div>
+					<div data-href="Action/apcode?type=Organization" data-title="組織設定(客戶規格)">組織設定</div>
+					<div data-href="Action/apcode?type=Method" data-title="製法設定(客戶規格)">製法設定</div>
+					<div data-href="Action/apcode?type=Shape" data-title="形狀設定(客戶規格)">形狀設定</div>
+					<div data-href="Action/apcode?type=Edge" data-title="緣形設定(客戶規格)">緣形設定</div>
+				</div>
+			</div>
+			<div>
+				<span>配方規格</span>
+				<div>
+					<div data-href="Action/apcode?type=Abrasive" data-title="磨料設定(配方規格)">磨料設定</div>
+					<div data-href="Action/apcode?type=SubMaterial" data-title="副料設定(配方規格)">副料設定</div>
+					<div data-href="Action/apcode?type=Nutshell" data-title="果殼設定(配方規格)">果殼設定</div>
+					<div data-href="Action/apcode?type=LiquidGlue" data-title="液態膠設定(配方規格)">液態膠設定</div>
+				</div>
+			</div>
+			<div data-href="Action/apcode?type=Granularity" data-title="粒度設定">粒度設定</div>
+		</div>
+		<div id="mm2" style="width:150px;">
+			<div data-href="Action/mixform" data-title="V法調和單">V法調和單</div>						
+		</div>
+	</body>
+</html>

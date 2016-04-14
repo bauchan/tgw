@@ -1,0 +1,673 @@
+<style>
+	#grid TD,#grid TH{
+		margin-top: 5px;
+		border-collapse: collapse;
+		border: 1px solid #aaa;
+	}
+	#table4,#table4 TH,#table4 TD{
+		border: 0px;
+		border-bottom:1px solid #ccc;				
+	}
+				
+	
+	#table1 TH,#table1 TD{
+		border-right:1px solid #ccc;
+		padding:2px;
+	}
+	
+	#table1 TH:last-child,#table1 TD:last-child{
+		border-right:0px solid #ccc;								
+	}
+	
+	#table2 TH,#table2 TD{
+		border:0px;				
+		padding:2px;
+		border-left:1px solid #ccc;
+		border-right:1px solid #ccc;
+	}
+</style/>
+<script type="text/javascript">
+	function myformatter(date){
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
+	}
+	function myparser(s){
+		if (!s) return new Date();
+		var ss = (s.split('-'));
+		var y = parseInt(ss[0],10);
+		var m = parseInt(ss[1],10);
+		var d = parseInt(ss[2],10);
+		if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+			return new Date(y,m-1,d);
+		} else {
+			return new Date();
+		}
+	}
+</script>
+<div>
+	<div  class="easyui-panel" style="padding:5px;width:99%"  data-options="iconCls:'icon-search',collapsible:true">
+		<table width="100%">
+			<tr>
+				<th>客戶編號</th>
+				<td><input id="cg" style="width:150px" /></td>
+				<th>訂單編號</th>
+				<td><input id="cg" style="width:150px" /></td>
+				<th>圖面編號</th>
+				<td><select class="easyui-combobox" name="state"></select></td>
+				<td rowspan="3" valign="bottom">
+					<div style="padding:5px 100px;">
+						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">查詢</a>
+						<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" style="width:80px">新增</a>					
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th>客戶名稱</th>
+				<td><input id="cg" style="width:150px" /></td>
+				<th>總編號</th>
+				<td><select class="easyui-combobox" name="state"></select></td>
+				<th>製造性質</th>
+				<td><select class="easyui-combobox" name="state"></select></td>
+			</tr>
+			<tr>
+				<th>Key單日期</th>
+				<td><input class="easyui-datebox" style="width:150px" data-options="formatter:myformatter,parser:myparser"/></td>
+				<th>調和批次</th>
+				<td><select class="easyui-combobox" name="state"></select></td>
+				<td></td>
+				<td></td>
+				
+			</tr>
+		</table>	
+
+		<table id="grid" width="100%" style="margin-top: 5px;border-collapse: collapse;border: 1px solid #aaa;" cellspacing="3" cellpadding="4">
+			<tr>
+				<th>磨 料</th> 
+				<th>粒 度</th> 
+				<th>結合度</th> 
+				<th>組 織</th> 
+				<th>製 法</th> 
+				<th>形 狀</th> 
+				<th>緣 形</th> 
+				<th>主要尺寸</th> 
+				<th>調和數量</th>
+				<th>單顆重量(g)</th> 
+				<th>挖孔</th>
+			</tr>
+			<tr>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option>19A</option>						
+					</select>													
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="3000">3000</option>
+					</select>					
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="AL">A</option>
+					</select>
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="D">W</option>
+						<option value="E">E</option>
+					</select>				
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="D">V</option>
+					</select>
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="D">60異</option>
+					</select>
+				</td>
+				<td>
+					<select class="easyui-combobox" name="state">
+						<option value="D">A</option>
+					</select>
+				</td>
+				<td>
+					<input style="width:50px;" maxlength="4" size="4"/>&nbsp;X
+					<input style="width:50px;" maxlength="4" size="4"/>&nbsp;X
+					<input style="width:50px;" maxlength="4" size="4"/>
+				</td>
+				<td>
+					<input style="width:50px;" maxlength="4" size="4"/>
+				</td>
+				<td>
+					<input style="width:50px;" maxlength="4" size="4"/>
+				</td>
+				<td>
+					寬 <input style="width:50px;" maxlength="4" size="4"/>
+					深 <input style="width:50px;" maxlength="4" size="4"/>
+				</td>
+				
+			</tr>
+			<tr>
+				<td colspan="13" align="left" valign="top" width="100%" style="padding:0px;border:0px">
+					<table id="table4" cellspacing="0" cellpadding="0" style="padding:0px;border:0px" width="100%">
+						<tr>
+							<td valign="top">
+								<table id="table1" cellspacing="0" style="padding:0px" cellspacing="0" cellpadding="0" width="100%">
+									<tr>
+										<th colspan="4">繪     圖(其他尺寸)</th>
+									</tr>	
+									<tr>
+										<td>A= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>B= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>C= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>E= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>F= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>G= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>J= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>K= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>I=
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>M= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>N= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>O= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>P= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>R= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>U= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>V= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td>w= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>x= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>							
+							</td>
+							<td>
+								<table id="table2" cellspacing="0" style="padding:0px" width="100%">
+									<tr>
+										<th width="">研磨方式</th>
+										<td>
+											<select class="easyui-combobox" name="state">
+												<option>外徑研磨-深切緩進</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th>濕或乾磨</th>
+										<td>
+											<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+									<tr>
+										<th>工件名稱</th>
+										<td>
+											<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+									<tr>
+										<th>工件材質</th>
+										<td>
+											<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+									<tr>
+										<th>工件硬度</th>
+										<td>
+											<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+									<tr>
+										<th>線 速 度</th>
+										<td>
+											<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+									<tr>
+										<th>備 註</th>
+										<td>
+										<select class="easyui-combobox" name="state" />
+										</td>
+									</tr>
+								</table>							
+							</td>							
+							<td valign="top">
+								<table id="table1" cellspacing="0" style="padding:0px" width="100%">
+									<tr>
+										<td colspan="6" rowspan="2" valign="top">使用結果</th>
+										<th colspan="5">模  具</th>
+									</tr>      		
+									<tr>			
+										<td>
+											D= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">33.6</option>
+											</select>
+										</td>
+										<td>
+											T= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">33.6</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>
+											H= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<th>日期</th>
+										<th>窯號</th>
+										<th>數量</th>
+										<th>日期</th>
+										<th>窯號</th>
+										<th>數量</th>
+										<td>E= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>F= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>G= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>P1= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>P2= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>										
+										</td>
+									</tr>
+									<tr>
+										<td><input class="easyui-datebox" style="width:100px" data-options="formatter:myformatter,parser:myparser"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input class="easyui-datebox" style="width:100px" data-options="formatter:myformatter,parser:myparser"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<th>日期</th>
+										<th>窯號</th>
+										<th>數量</th>
+										<th>日期</th>
+										<th>窯號</th>
+										<th>數量</th>
+										<td>B= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>L= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>A= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>W= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+										<td>T= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><input class="easyui-datebox" style="width:100px" data-options="formatter:myformatter,parser:myparser"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input class="easyui-datebox" style="width:100px" data-options="formatter:myformatter,parser:myparser"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td> 
+										<td><input style="width:50px;" maxlength="4" size="4"/></td>
+										<td>R1= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+											</td>
+										<td>R2= 
+											<select class="easyui-combobox" name="state">
+												<option value="D">D</option>
+												<option value="E">E</option>
+											</select>
+											</td>
+										<td></td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>							
+							</td>						
+						</tr>
+					</table>					
+				</td>
+			</tr>
+			<tr>
+				<td colspan="13" align="left" valign="top" cellspacing="0" cellpadding="0" style="padding:0px;border:0px">
+					<table id="table4" cellspacing="0" cellpadding="0" style="padding:0px;border:0px" width="100%">
+						<tr>
+							<td style="border-bottom:0px">
+								<table id="table1" cellspacing="0" style="padding:0px" cellspacing="0" cellpadding="0" width="100%">								
+									<tr>
+										<th colspan="3">主 原 料 1</th>
+										<th colspan="3">主 原 料 2</th>
+										<th colspan="3">主 原 料 3</th>
+										<th colspan="3">主 原 料 4</th>
+										<th colspan="2">副 料 1</th>
+										<th colspan="2">副 料 2</th>
+										<th>自來水</th>
+										<th>膠粉</th>
+										<th colspan="2">果殼</th>
+										<th colspan="2">液態膠</th>
+									</tr>
+									<tr>
+										<th>磨料</th>
+										<th>粒度</th>
+										<th>%</th>
+										<th>磨料</th>
+										<th>粒度</th>
+										<th>%</th>
+										<th>磨料</th>
+										<th>粒度</th>
+										<th>%</th>
+										<th>磨料</th>
+										<th>粒度</th>
+										<th>%</th>
+										<th>NO</th>
+										<th>B-V%</th>
+										<th>NO</th>
+										<th>B-V%</th>
+										<th>WV%</th>
+										<th>RV%</th>
+										<th>種類</th>
+										<th>NTU-V%</th>
+										<th>種類</th>
+										<th>WR-V%</th>
+									</tr>
+									<tr>										
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state" >
+												<option value="D">WA-A</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">300</option>
+											</select>																				
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">79.975</option>
+											</select>											
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state" >
+												<option value="D">WA-A</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">300</option>
+											</select>																				
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">79.975</option>
+											</select>											
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state" >
+												<option value="D">WA-A</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">300</option>
+											</select>																				
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">79.975</option>
+											</select>											
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state" >
+												<option value="D">WA-A</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">300</option>
+											</select>																				
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">79.975</option>
+											</select>											
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">831</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">12.013</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">831</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">12.013</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">2.354</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">1.961</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">小</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">6.246</option>
+											</select>
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">CH</option>
+											</select> 
+										</td>
+										<td style="border-bottom:0px">
+											<select class="easyui-combobox" name="state">
+												<option value="D">CH2</option>
+											</select>
+										</td>										
+									</tr>
+								</table>									
+							</td>							
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>		
+	</div>
+	<br/>		
+	<div title="檢索結果" class="easyui-panel" style="padding:5px;width:99%"  data-options="iconCls:'icon-search',collapsible:true">
+	<table class="easyui-datagrid" style="width:100%;height:500px"
+		data-options="rownumbers:true,remoteFilter: true,collapsible:true,singleSelect:true,url:'datagrid_data1.json',method:'get'">
+		<thead data-options="frozen:true">
+			<tr>				
+				<th data-options="field:'ck',checkbox:true"></th>
+				<th data-options="field:'itemid',width:100,align:'center'">訂\配</th>
+				<th data-options="field:'productid',width:120,align:'center'">調和</th>
+				<th data-options="field:'listprice',width:100,align:'center'">客戶編號</th>
+				<th data-options="field:'unitcost',width:150,align:'center'">客戶名稱</th>
+			</tr>
+		</thead>
+		<thead>
+			<tr>					
+				<th data-options="field:'attr1',width:100,align:'center'">訂單編號</th>
+				<th data-options="field:'status',width:60,align:'center'">調和批次</th>
+				<th data-options="field:'status',width:60,align:'center'">調和數量</th>
+				<th data-options="field:'status',width:60,align:'center'">製造性質</th>
+				<th data-options="field:'status',width:60,align:'center'">磨料</th>
+				<th data-options="field:'status',width:60,align:'center'">粒度</th>
+				<th data-options="field:'status',width:60,align:'center'">硬度</th>
+				<th data-options="field:'status',width:60,align:'center'">組織</th>
+				<th data-options="field:'status',width:60,align:'center'">形狀</th>
+				<th data-options="field:'status',width:60,align:'center'">外徑</th>
+				<th data-options="field:'status',width:60,align:'center'">註記</th>
+				
+			</tr>
+		</thead>
+	</table>
+	</div>
+</div>

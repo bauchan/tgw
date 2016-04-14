@@ -1,0 +1,141 @@
+<div id="cornerstone" class="easyui-panel" style="padding:5px;width:100%;height:100%" data-options="border:false,iconCls:'icon-search',collapsible:true">
+	<table id="cornerstonedg" width="99%"  
+		pageSize="20" 
+		toolbar="#cornerstone #toolbar" 
+		pagination="true"
+		rownumbers="true" 
+		fitColumns="true" 
+		singleSelect="true"		
+	>
+		<thead>
+			<tr>
+				<th data-options="field:'b',width:10">B</th>
+				<th data-options="field:'l',width:10">L</th>
+				<th data-options="field:'a',width:10">A</th>
+				<th data-options="field:'w',width:10">W</th>
+				<th data-options="field:'u',width:10">U</th>
+				<th data-options="field:'t',width:10">T</th>
+				<th data-options="field:'r1',width:10">R1</th>
+				<th data-options="field:'r2',width:10">R2</th>
+				<th data-options="field:'shape',width:20">形狀</th>				
+			</tr>
+		</thead>
+	</table>	
+	<br/>
+    <div id="toolbar">
+        <a href="javascript:void(0)" id="addbtn" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增</a>
+        <a href="javascript:void(0)" id="modifybtn" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        <a href="javascript:void(0)" id="delbtn" class="easyui-linkbutton" iconCls="icon-remove" plain="true">刪除</a>
+    </div>	
+		
+	<div id="cornerstonedlg" class="easyui-dialog" title="客戶基本資料" style="width:400px;height:350px;padding:10px 20px" closed="true" buttons="#dlg-buttons">		
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<table style="padding:5px">
+					<tr><th>B</th><td><input name="b" class="easyui-numberbox"></td></tr>
+					<tr><th>L</th><td><input name="l" class="easyui-numberbox"></td></tr>
+					<tr><th>A</th><td><input name="a" class="easyui-numberbox"></td></tr>
+					<tr><th>W</th><td><input name="w" class="easyui-numberbox"></td></tr>
+					<tr><th>U</th><td><input name="u" class="easyui-numberbox"></td></tr>
+					<tr><th>T</th><td><input name="t" class="easyui-numberbox"></td></tr>
+					<tr><th>R1</th><td><input name="r1" class="easyui-numberbox"></td></tr>
+					<tr><th>R2</th><td><input name="r2" class="easyui-numberbox"></td></tr>
+					<tr><th>形狀</th><td><input name="shape" class="easyui-textbox" required="true"></td></tr>									
+				</table>					
+			</div>			
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" id="savebtn" class="easyui-linkbutton c6" iconCls="icon-ok" style="width:90px">Save</a>
+		<a href="javascript:void(0)" id="closebtn" class="easyui-linkbutton" iconCls="icon-cancel" style="width:90px">Cancel</a>
+	</div>
+</div>	
+<script type="text/javascript">
+	(function(){		
+		var url = "";
+		var panel = $("#cornerstone");
+		var toolbar = panel.find("#toolbar");
+		var dlg = $("#cornerstonedlg");
+		var grid = $("#cornerstonedg");
+		
+		var dg = grid.datagrid({
+			url: 'Action/cornerstone/list',
+			pagination: true,
+			remoteFilter: true,
+			rownumbers: true
+		});
+		
+		$("#cornerstonedg").datagrid('enableFilter',[
+			{field:'b',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'l',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'a',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'w',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'u',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'t',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'r1',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']},
+			{field:'r2',type:'numberbox',options:{precision:2},op:['equal','notequal','less','greater']}
+		]);
+		
+		toolbar.find("#addbtn").click(function(){
+			dlg.dialog('open').dialog('center').dialog('setTitle','參數設定');
+			dlg.find('#fm').form('clear');
+			url = 'Action/cornerstone/save';
+		});
+		
+		toolbar.find("#modifybtn").click(function(){
+			var row = grid.datagrid('getSelected');
+			
+			if (row){
+				dlg.dialog('open').dialog('center').dialog('setTitle','參數設定');
+				dlg.find('#fm').form('load',row);
+				url = 'Action/cornerstone/update?id='+row.id;
+			}
+		});
+		
+		toolbar.find("#delbtn").click(function(){
+			var row = grid.datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm',',確定刪除該筆資料?',function(r){
+					if (r){
+						$.post('Action/cornerstone/delete',{id:row.id},function(result){
+							if (result.success){
+								slide("刪除成功!");	
+								grid.datagrid('reload');    // reload the user data
+							} else {
+								$.messager.show({    // show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		});
+				
+		panel.find("#savebtn").click(function(){
+			$(dlg).find('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: 'Error',
+							msg: result.errorMsg
+						});
+					} else {
+						slide(result.msg);
+						dlg.dialog('close');        // close the dialog
+						grid.datagrid('reload');    // reload the user data
+					}
+				}
+			});
+		});
+		panel.find("#closebtn").click(function(){
+			dlg.dialog('close');
+		});		
+	})()	
+</script>

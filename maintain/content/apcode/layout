@@ -1,0 +1,106 @@
+<div id="<?=$_GET["type"]?>" class="easyui-panel" style="padding:5px;width:100%;height:700px" data-options="border:false,iconCls:'icon-search',collapsible:true">
+	<table id="dg" width="100%" class="easyui-datagrid" 
+		pageSize="20" 
+		url="Action/apcode/list?type=<?=$_GET["type"]?>" 
+		toolbar="#<?=$_GET["type"]?> #toolbar" 
+		pagination="true"
+		rownumbers="true" 
+		fitColumns="true" 
+		singleSelect="true"
+	>
+		<thead>
+			<tr>
+				<th data-options="field:'name',width:20">標題</th>
+			</tr>
+		</thead>
+	</table>	
+	
+    <div id="toolbar">
+        <a href="javascript:void(0)" id="addbtn" class="easyui-linkbutton" iconCls="icon-add" plain="true">新增</a>
+        <a href="javascript:void(0)" id="modifybtn" class="easyui-linkbutton" iconCls="icon-edit" plain="true">修改</a>
+        <a href="javascript:void(0)" id="delbtn" class="easyui-linkbutton" iconCls="icon-remove" plain="true">刪除</a>
+    </div>	
+		
+	<div id="<?=$_GET["type"]?>dlg" class="easyui-dialog" title="客戶基本資料" style="width:400px;height:280px;padding:10px 20px" closed="true" buttons="#dlg-buttons">		
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>標題:</label>
+				<input name="name" class="easyui-textbox" required="true">
+			</div>			
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" id="savebtn" class="easyui-linkbutton c6" iconCls="icon-ok" style="width:90px">Save</a>
+		<a href="javascript:void(0)" id="closebtn" class="easyui-linkbutton" iconCls="icon-cancel" style="width:90px">Cancel</a>
+	</div>
+</div>	
+<script type="text/javascript">
+	(function(){		
+		var url = "";
+		var panel = $("#<?=$_GET["type"]?>");
+		var toolbar = panel.find("#toolbar");
+		var dlg = $("#<?=$_GET["type"]?>dlg");
+		
+		toolbar.find("#addbtn").click(function(){
+			dlg.dialog('open').dialog('center').dialog('setTitle','參數設定');
+			dlg.find('#fm').form('clear');
+			url = 'Action/apcode/save?type=<?=$_GET["type"]?>';
+		});
+		
+		toolbar.find("#modifybtn").click(function(){
+			var row = panel.find('#dg').datagrid('getSelected');
+			
+			if (row){
+				dlg.dialog('open').dialog('center').dialog('setTitle','參數設定');
+				dlg.find('#fm').form('load',row);
+				url = 'Action/apcode/update?id='+row.id;
+			}
+		});
+		
+		toolbar.find("#delbtn").click(function(){
+			var row = panel.find('#dg').datagrid('getSelected');
+			if (row){
+				$.messager.confirm('Confirm',',確定刪除該筆資料?',function(r){
+					if (r){
+						$.post('Action/apcode/delete',{id:row.id},function(result){
+							if (result.success){
+								slide("刪除成功!");	
+								panel.find('#dg').datagrid('reload');    // reload the user data
+							} else {
+								$.messager.show({    // show error message
+									title: 'Error',
+									msg: result.errorMsg
+								});
+							}
+						},'json');
+					}
+				});
+			}
+		});
+				
+		panel.find("#savebtn").click(function(){
+			$(dlg).find('#fm').form('submit',{
+				url: url,
+				onSubmit: function(){
+					return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');
+					if (result.errorMsg){
+						$.messager.show({
+							title: 'Error',
+							msg: result.errorMsg
+						});
+					} else {
+						slide(result.msg);
+						dlg.find('#dlg').dialog('close');        // close the dialog
+						panel.find('#dg').datagrid('reload');    // reload the user data
+					}
+				}
+			});
+		});
+		panel.find("#closebtn").click(function(){
+			dlg.dialog('close');
+		});		
+	})()	
+</script>

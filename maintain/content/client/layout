@@ -1,0 +1,107 @@
+<div id="client" class="easyui-panel" style="padding:5px;width:100%;height:100%" data-options="border:false,iconCls:'icon-search',collapsible:true">
+
+	<table id="dg" width="100%" class="easyui-datagrid" 
+		pageSize="20" 
+		url="Action/client/list" 
+		toolbar="#client #toolbar" 
+		pagination="true"
+		rownumbers="true" 
+		fitColumns="true" 
+		singleSelect="true"
+	>
+		<thead>
+			<tr>
+				<th data-options="field:'code',width:20">客戶編號</th>
+				<th data-options="field:'name',width:80">客戶名稱</th>
+			</tr>
+		</thead>
+	</table>	
+	
+    <div id="toolbar">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">刪除</a>
+    </div>	
+		
+	<div id="dlg" class="easyui-dialog" title="客戶基本資料" style="width:400px;height:280px;padding:10px 20px" closed="true" buttons="#dlg-buttons">		
+		<form id="fm" method="post" novalidate>
+			<div class="fitem">
+				<label>客戶編號:</label>
+					<input name="code" class="easyui-textbox" required="true">
+				</div>
+			<div class="fitem">
+				<label>客戶名稱:</label>
+				<input name="name" class="easyui-textbox" required="true">
+			</div>			
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+	</div>
+</div>	
+<script type="text/javascript">
+	function slide(msg){
+		$.messager.show({
+			title:'提示視窗',
+			msg:msg,
+			timeout:3000,
+			showType:'slide'
+		});
+	}
+		
+	function newUser(){
+		$('#dlg').dialog('open').dialog('center').dialog('setTitle','客戶基本資料');
+		$('#fm').form('clear');
+		url = 'Action/client/save';
+	}
+	function editUser(){
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+			$('#dlg').dialog('open').dialog('center').dialog('setTitle','客戶基本資料');
+			$('#fm').form('load',row);
+			url = 'Action/client/update?id='+row.id;
+		}
+	}
+	function saveUser(){
+		$('#fm').form('submit',{
+			url: url,
+			onSubmit: function(){
+				return $(this).form('validate');
+			},
+			success: function(result){
+				var result = eval('('+result+')');
+				if (result.errorMsg){
+					$.messager.show({
+						title: 'Error',
+						msg: result.errorMsg
+					});
+				} else {
+					slide(result.msg);
+					$('#dlg').dialog('close');        // close the dialog
+					$('#dg').datagrid('reload');    // reload the user data
+				}
+			}
+		});
+	}
+	function destroyUser(){
+		var row = $('#dg').datagrid('getSelected');
+		if (row){
+			$.messager.confirm('Confirm',',確定刪除該筆資料?',function(r){
+				if (r){
+					$.post('Action/client/delete',{id:row.id},function(result){
+						if (result.success){
+							slide("刪除成功!");	
+							$('#dg').datagrid('reload');    // reload the user data
+						} else {
+							$.messager.show({    // show error message
+								title: 'Error',
+								msg: result.errorMsg
+							});
+						}
+					},'json');
+				}
+			});
+		}
+	}
+</script>
